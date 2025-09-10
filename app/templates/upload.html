@@ -15,9 +15,53 @@
 10,10,0.99,40000</pre>
     <p><a href="{{ url_for('static', filename='sample.csv') }}" download>Baixar CSV de exemplo</a></p>
   </details>
-  <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-form">
-    <input type="file" name="file" accept=".csv" required />
+  <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-form" id="upload-form">
+    <div class="upload-drop-area" id="drop-area">
+      <span id="drop-text">Clique ou arraste o arquivo CSV aqui</span>
+      <input type="file" name="file" accept=".csv" required id="file-input" />
+    </div>
     <button type="submit">Processar</button>
   </form>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const dropArea = document.getElementById('drop-area');
+  const fileInput = document.getElementById('file-input');
+  const dropText = document.getElementById('drop-text');
+
+  // Highlight drop area on drag
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropArea.classList.add('dragover');
+    }, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropArea.classList.remove('dragover');
+    }, false);
+  });
+
+  // Handle drop
+  dropArea.addEventListener('drop', (e) => {
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      fileInput.files = e.dataTransfer.files;
+      dropText.textContent = e.dataTransfer.files[0].name;
+    }
+  });
+
+  // Show file name on manual select
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files.length > 0) {
+      dropText.textContent = fileInput.files[0].name;
+    } else {
+      dropText.textContent = "Clique ou arraste o arquivo CSV aqui";
+    }
+  });
+});
+</script>
 {% endblock %}

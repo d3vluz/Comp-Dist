@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Carregar configurações (CSV)</h2>
+  <p>Envie um arquivo <code>.csv</code> com as colunas <strong>n</strong>, <strong>k</strong>, <strong>p</strong> e (opcional) <strong>rounds</strong>.</p>
+  <details class="spec">
+    <summary>Formato esperado do CSV</summary>
+    <pre>n,k,p,rounds
+3,1,0.20,20000
+3,1,0.50,20000
+3,1,0.80,20000
+5,3,0.50,20000
+5,3,0.70,20000
+10,10,0.95,40000
+10,10,0.99,40000</pre>
+    <p><a href="{{ url_for('static', filename='sample.csv') }}" download>Baixar CSV de exemplo</a></p>
+  </details>
+  <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-form">
+    <input type="file" name="file" accept=".csv" required />
+    <button type="submit">Processar</button>
+  </form>
+</section>
+{% endblock %}

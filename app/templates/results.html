@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Resultados</h2>
+  <p>Download da tabela: <a href="{{ url_for('static', filename=summary.results_csv_rel) }}" download>results.csv</a></p>
+  <div class="table-wrap">
+    {{ summary.table | safe }}
+  </div>
+</section>
+
+<section class="card">
+  <h3>Gráfico — Analítico vs Experimental</h3>
+  <img src="{{ url_for('static', filename=summary.images.comparacao) }}" alt="Comparação Analítico vs Experimental" />
+</section>
+
+<section class="card">
+  <h3>Erro absoluto</h3>
+  <img src="{{ url_for('static', filename=summary.images.erro) }}" alt="Erro absoluto por configuração" />
+</section>
+
+<section class="card">
+  <h3>Curvas Analíticas (k=1, n/2, n)</h3>
+  <div class="grid">
+    {% for curv in summary.images.curvas %}
+      <img src="{{ url_for('static', filename=curv) }}" alt="Curvas analíticas" />
+    {% endfor %}
+  </div>
+</section>
+
+<p><a class="back" href="{{ url_for('upload') }}">← Nova execução</a></p>
+{% endblock %}
